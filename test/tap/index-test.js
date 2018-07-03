@@ -110,5 +110,17 @@ test('logFaces appender', (batch) => {
     t.end();
   });
 
+  batch.test('should serialise stack traces correctly', (t) => {
+    const setup = setupLogging('stack-traces', {
+      url: 'http://localhost/receivers/rx1'
+    });
+
+    setup.logger.error('Oh no', new Error('something went wrong'));
+    const event = setup.fakeAxios.args[1];
+    t.match(event.m, /Error: something went wrong/);
+    t.match(event.m, /at Test.batch.test/);
+    t.end();
+  });
+
   batch.end();
 });
