@@ -31,8 +31,8 @@
   "scripts": {
     "prepush": "npm test",
     "commitmsg": "validate-commit-msg",
-    "pretest": "eslint 'lib/**/*.js' 'test/**/*.js'",
-    "test": "tap 'test/tap/**/*.js' --100",
+    "pretest": "eslint \"lib/**/*.js\" \"test/**/*.js\"",
+    "test": "tap \"test/tap/**/*.js\" --cov",
     "codecov": "tap 'test/tap/**/*.js' --cov --coverage-report=lcov && codecov"
   },
   "directories": {
@@ -40,21 +40,21 @@
     "lib": "lib"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "debug": "^3.1.0"
   },
   "devDependencies": {
-    "@log4js-node/sandboxed-module": "^2.1.1",
-    "codecov": "^3.0.0",
+    "@log4js-node/sandboxed-module": "^2.2.1",
+    "codecov": "^3.6.1",
     "conventional-changelog": "^1.1.15",
-    "eslint": "^4.10.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-import-resolver-node": "^0.3.1",
-    "eslint-plugin-import": "^2.8.0",
-    "husky": "^0.14.3",
-    "log4js": "^2.10.0",
-    "nyc": "^11.5.0",
-    "tap": "^12.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-import-resolver-node": "^0.3.2",
+    "eslint-plugin-import": "^2.18.2",
+    "husky": "^3.0.9",
+    "log4js": "^6.3.0",
+    "nyc": "^14.1.1",
+    "tap": "^14.10.7",
     "validate-commit-msg": "^2.14.0"
   },
   "browser": {
@@ -72,7 +72,8 @@
         "perf",
         "test",
         "chore",
-        "revert"
+        "revert",
+        "build"
       ],
       "warnOnFail": false,
       "maxSubjectLength": 72,
