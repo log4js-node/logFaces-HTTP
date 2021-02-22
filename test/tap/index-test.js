@@ -4,7 +4,7 @@ const test = require('tap').test;
 const sandbox = require('@log4js-node/sandboxed-module');
 const appender = require('../../lib');
 
-function setupLogging(category, options) {
+function setupLogging(category, enableCallStack, options) {
   const fakeAxios = {
     create: function (config) {
       this.config = config;
@@ -45,7 +45,7 @@ function setupLogging(category, options) {
   options.type = '@log4js-node/logfaces-http';
   log4js.configure({
     appenders: { http: options },
-    categories: { default: { appenders: ['http'], level: 'trace' } }
+    categories: { default: { appenders: ['http'], level: 'trace', enableCallStack: enableCallStack } }
   });
 
   return {
@@ -62,7 +62,7 @@ test('logFaces appender', (batch) => {
   });
 
   batch.test('when using HTTP receivers', (t) => {
-    const setup = setupLogging('myCategory', {
+    const setup = setupLogging('myCategory', false, {
       application: 'LFS-HTTP',
       url: 'http://localhost/receivers/rx1'
     });
@@ -111,14 +111,37 @@ test('logFaces appender', (batch) => {
   });
 
   batch.test('should serialise stack traces correctly', (t) => {
-    const setup = setupLogging('stack-traces', {
+    const setup = setupLogging('stack-traces', false, {
       url: 'http://localhost/receivers/rx1'
     });
 
     setup.logger.error('Oh no', new Error('something went wrong'));
     const event = setup.fakeAxios.args[1];
-    t.match(event.m, /Error: something went wrong/);
-    t.match(event.m, /at Test.batch.test/);
+    t.equal(event.m, 'Oh no');
+    t.equal(event.w, true);
+    t.match(event.i, /Error: something went wrong/);
+    t.match(event.i, /at Test.batch.test/);
+
+    t.end();
+  });
+
+  batch.test('log event should contain locations', (t) => {
+    const setup = setupLogging('myCategory', true, {
+      application: 'LFS-HTTP',
+      url: 'http://localhost/receivers/rx1'
+    });
+
+    setup.logger.info('Log event #1');
+    const event = setup.fakeAxios.args[1];
+    t.equal(event.a, 'LFS-HTTP');
+    t.equal(event.m, 'Log event #1');
+    t.equal(event.g, 'myCategory');
+    t.equal(event.p, 'INFO');
+
+    t.match(event.f, /index-test.js/);
+    t.match(event.e, /Test.batch.test/);
+    t.ok(typeof event.l === 'number');
+
     t.end();
   });
 
