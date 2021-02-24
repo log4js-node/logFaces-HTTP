@@ -20,7 +20,7 @@ This appender will also pick up Logger context values from the events, and add t
 ```javascript
 log4js.configure({
   appenders: {
-    logfaces: { type: 'logFaces-HTTP', url: 'http://lfs-server/logs' }
+    logfaces: { type: '@log4js-node/logfaces-http', url: 'http://lfs-server/logs' }
   },
   categories: {
     default: { appenders: [ 'logfaces' ], level: 'info' }
