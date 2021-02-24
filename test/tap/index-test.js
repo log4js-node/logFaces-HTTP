@@ -50,6 +50,7 @@ function setupLogging(category, enableCallStack, options) {
 
   return {
     logger: log4js.getLogger(category),
+    logger2: log4js.getLogger(category),
     fakeAxios: fakeAxios,
     fakeConsole: fakeConsole
   };
@@ -141,6 +142,75 @@ test('logFaces appender', (batch) => {
     t.match(event.f, /index-test.js/);
     t.match(event.e, /Test.batch.test/);
     t.ok(typeof event.l === 'number');
+
+    t.end();
+  });
+
+  batch.test('can handle global context', (t) => {
+    const ctx = {
+      sessionID: 111
+    };
+
+    const setup = setupLogging('myCategory', false, {
+      application: 'LFS-HTTP',
+      url: 'http://localhost/receivers/rx1',
+      configContext: () => ctx
+    });
+
+    t.test('event has properties from config context', (assert) => {
+      setup.logger.info('Log event #1');
+      const event1 = setup.fakeAxios.args[1];
+      assert.equal(event1.m, 'Log event #1');
+      assert.equal(event1.p_sessionID, 111);
+      assert.end();
+    });
+
+    t.test('two appenders share the same config context', (assert) => {
+      setup.logger.info('Log event #1');
+      const event1 = setup.fakeAxios.args[1];
+      assert.equal(event1.m, 'Log event #1');
+      assert.equal(event1.p_sessionID, 111);
+
+      setup.logger2.info('Log event #2');
+      const event2 = setup.fakeAxios.args[1];
+      assert.equal(event2.m, 'Log event #2');
+      assert.equal(event2.p_sessionID, 111);
+
+      assert.end();
+    });
+
+    t.test('update config context', (assert) => {
+      setup.logger.info('Log event #1');
+      const event1 = setup.fakeAxios.args[1];
+      assert.equal(event1.m, 'Log event #1');
+      assert.equal(event1.p_sessionID, 111);
+
+      ctx.sessionID = 222;
+
+      setup.logger.info('Log event #2');
+      const event2 = setup.fakeAxios.args[1];
+      assert.equal(event2.m, 'Log event #2');
+      assert.equal(event2.p_sessionID, 222);
+
+      assert.end();
+    });
+
+    t.test('appender context overrides config context', (assert) => {
+      ctx.sessionID = 111;
+
+      setup.logger.info('Log event #1');
+      const event1 = setup.fakeAxios.args[1];
+      assert.equal(event1.m, 'Log event #1');
+      assert.equal(event1.p_sessionID, 111);
+
+      setup.logger.addContext('sessionID', 555);
+      setup.logger.info('Log event #2');
+      const event2 = setup.fakeAxios.args[1];
+      assert.equal(event2.m, 'Log event #2');
+      assert.equal(event2.p_sessionID, 555);
+
+      assert.end();
+    });
 
     t.end();
   });
