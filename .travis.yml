@@ -1,7 +1,4 @@
 language: node_js
-os:
-  - linux
-  - windows
 sudo: false
 node_js:
   - "14"
