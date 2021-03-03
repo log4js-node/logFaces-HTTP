@@ -121,7 +121,7 @@ test('logFaces appender', (batch) => {
     t.equal(event.m, 'Oh no');
     t.equal(event.w, true);
     t.match(event.i, /Error: something went wrong/);
-    t.match(event.i, /at Test.batch.test/);
+    t.match(event.i, /at (Test.batch.test|Test.<anonymous>)/);
 
     t.end();
   });
@@ -140,7 +140,7 @@ test('logFaces appender', (batch) => {
     t.equal(event.p, 'INFO');
 
     t.match(event.f, /index-test.js/);
-    t.match(event.e, /Test.batch.test/);
+    t.match(event.e, /(Test.batch.test|Test.<anonymous>)/);
     t.ok(typeof event.l === 'number');
 
     t.end();
