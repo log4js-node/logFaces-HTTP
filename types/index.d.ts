@@ -6,4 +6,6 @@ export interface LogFacesHTTPAppender {
         application?: string;
         // (defaults to 5000ms) - the timeout for the HTTP request.
         timeout?: number;
+        /** logFaces hostname (h) property */
+        hostname?: string;
 }

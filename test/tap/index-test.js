@@ -65,7 +65,8 @@ test('logFaces appender', (batch) => {
   batch.test('when using HTTP receivers', (t) => {
     const setup = setupLogging('myCategory', false, {
       application: 'LFS-HTTP',
-      url: 'http://localhost/receivers/rx1'
+      url: 'http://localhost/receivers/rx1',
+      hostname: 'localhost'
     });
 
     t.test('axios should be configured', (assert) => {
@@ -86,6 +87,7 @@ test('logFaces appender', (batch) => {
       assert.equal(event.m, 'Log event #1');
       assert.equal(event.g, 'myCategory');
       assert.equal(event.p, 'WARN');
+      assert.equal(event.h, 'localhost');
       assert.equal(event.p_foo, 'bar');
       assert.equal(event.p_bar, 'foo');
 
