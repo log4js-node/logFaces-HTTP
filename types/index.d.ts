@@ -9,3 +9,10 @@ export interface LogFacesHTTPAppender {
         /** logFaces hostname (h) property */
         hostname?: string;
 }
+
+// Add the LogFacesHTTPAppender to the list of appenders in log4js for better type support
+declare module 'log4js'{
+        export interface Appenders {
+                LogFacesHTTPAppender: LogFacesHTTPAppender
+        }
+}
