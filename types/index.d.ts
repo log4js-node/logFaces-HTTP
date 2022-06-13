@@ -1,5 +1,5 @@
 export interface LogFacesHTTPAppender {
-  type: "@log4js-node/logfaces-http";
+  type: '@log4js-node/logfaces-http';
   /** logFaces receiver servlet URL */
   url: string;
   /** used to identify your application’s logs
@@ -17,7 +17,7 @@ export interface LogFacesHTTPAppender {
 }
 
 // Add the LogFacesHTTPAppender to the list of appenders in log4js for better type support
-declare module "log4js" {
+declare module 'log4js' {
   export interface Appenders {
     LogFacesHTTPAppender: LogFacesHTTPAppender;
   }
