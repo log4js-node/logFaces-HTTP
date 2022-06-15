@@ -30,10 +30,10 @@
   },
   "scripts": {
     "prepare": "is-ci || husky install",
-    "pretest": "eslint 'lib/**/*.js' 'test/**/*.js'",
-    "test": "tap 'test/tap/**/*.js' --100",
+    "pretest": "eslint lib/**/*.js test/**/*.js",
+    "test": "tap test/tap/**/*.js --100",
     "typings": "tsc -p types/tsconfig.json",
-    "codecov": "tap 'test/tap/**/*.js' --cov --coverage-report=lcov && codecov"
+    "codecov": "tap test/tap/**/*.js --cov --coverage-report=lcov && codecov"
   },
   "directories": {
     "test": "test",
