@@ -52,7 +52,7 @@
     "eslint-plugin-import": "^2.26.0",
     "husky": "^8.0.1",
     "log4js": "^6.5.2",
-    "nyc": "^14.1.1",
+    "nyc": "^15.1.0",
     "tap": "^16.2.0",
     "validate-commit-msg": "^2.14.0"
   },
