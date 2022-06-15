@@ -9,8 +9,7 @@ sandbox.configure({
       if (this.filename.indexOf('node_modules') > -1) {
         return source;
       }
-      const nyc = new NYC();
-      return nyc.instrumenter().instrumentSync(source, this.filename);
+      return new NYC().instrumenter().instrumentSync(source, this.filename);
     }
   }
 });
