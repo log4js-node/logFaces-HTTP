@@ -29,8 +29,7 @@
     "node": ">=6.0"
   },
   "scripts": {
-    "prepush": "npm test",
-    "commitmsg": "validate-commit-msg",
+    "prepare": "is-ci || husky install",
     "pretest": "eslint 'lib/**/*.js' 'test/**/*.js'",
     "test": "tap 'test/tap/**/*.js' --100",
     "typings": "tsc -p types/tsconfig.json",
@@ -44,6 +43,8 @@
     "axios": "^0.27.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
     "@log4js-node/sandboxed-module": "^2.2.1",
     "codecov": "^3.8.3",
     "conventional-changelog": "^3.1.25",
@@ -52,36 +53,14 @@
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-import": "^2.26.0",
     "husky": "^8.0.1",
+    "is-ci": "^3.0.1",
     "log4js": "^6.5.2",
     "nyc": "^15.1.0",
     "tap": "^16.2.0",
-    "typescript": "^4.7.2",
-    "validate-commit-msg": "^2.14.0"
+    "typescript": "^4.7.2"
   },
   "browser": {
     "os": false
-  },
-  "config": {
-    "validate-commit-msg": {
-      "types": [
-        "feat",
-        "fix",
-        "docs",
-        "style",
-        "refactor",
-        "example",
-        "perf",
-        "test",
-        "chore",
-        "revert",
-        "build"
-      ],
-      "warnOnFail": false,
-      "maxSubjectLength": 72,
-      "subjectPattern": ".+",
-      "subjectPatternErrorMsg": "subject does not match subject pattern!",
-      "helpMessage": "\n# allowed type: feat, fix, docs, style, refactor, example, perf, test, chore, revert\n# subject no more than 50 chars\n# a body line no more than 72 chars"
-    }
   },
   "nyc": {
     "all": true,
