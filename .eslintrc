@@ -7,12 +7,10 @@
     "no-use-before-define": ["error"],
     "no-param-reassign": 0,
     "strict": 0,
-    "import/no-extraneous-dependencies": 1,
-    "prefer-spread": 0,
-    "prefer-rest-params": 0,
-    "prefer-destructuring": 0
+    "import/no-extraneous-dependencies": 2
   },
   "parserOptions": {
     "ecmaVersion": 6
-  }
+  },
+  "ignorePatterns": ["coverage/**/*", "commitlint.config.js"]
 }

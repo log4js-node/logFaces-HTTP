@@ -1,6 +1,6 @@
 'use strict';
 
-const test = require('tap').test;
+const { test } = require('tap');
 const sandbox = require('@log4js-node/sandboxed-module');
 const appender = require('../../lib');
 
