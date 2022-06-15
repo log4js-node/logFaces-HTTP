@@ -13,6 +13,7 @@ npm install log4js @log4js-node/logfaces-http
 * `application` - `string` (optional, defaults to empty string) - used to identify your application's logs
 * `timeout` - `integer` (optional, defaults to 5000ms) - the timeout for the HTTP request.
 * `configContext` - function (optional) returning a global context object accessible to all appenders. Properties from configContext added as `p_` values in the logFaces event.
+* `hostname` - `string` (optional) - used to add the hostname `h` property to the logFaces event.
 
 This appender will also pick up Logger context values from the events, and add them as `p_` values in the logFaces event. See the example below for more details. Note that Logger context may override the same properties defined in `configContext`.
 
@@ -26,7 +27,7 @@ const MDC = {
   sessionID: 111
 };
 
-// log4js framework configuration 
+// log4js framework configuration
 log4js.configure({
   appenders: {
     logfaces: { type: '@log4js-node/logfaces-http', url: 'http://lfs-server/logs', application: 'TesterApp', configContext: () => MDC }
