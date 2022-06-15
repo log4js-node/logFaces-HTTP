@@ -6,53 +6,55 @@ const appender = require('../../lib');
 
 function setupLogging(category, enableCallStack, options) {
   const fakeAxios = {
-    create: function (config) {
+    create(config) {
       this.config = config;
       return {
-        post: function (emptyString, event) {
+        post(emptyString, event) {
           fakeAxios.args = [emptyString, event];
           return {
-            catch: function (cb) {
+            catch(cb) {
               fakeAxios.errorCb = cb;
-            }
+            },
           };
-        }
+        },
       };
-    }
+    },
   };
 
   const fakeConsole = {
-    error: function (msg) {
+    error(msg) {
       this.msg = msg;
-    }
+    },
   };
 
   const appenderModule = sandbox.require('../../lib', {
     requires: {
-      axios: fakeAxios
+      axios: fakeAxios,
     },
     globals: {
-      console: fakeConsole
-    }
+      console: fakeConsole,
+    },
   });
   const log4js = sandbox.require('log4js', {
     requires: {
-      '@log4js-node/logfaces-http': appenderModule
+      '@log4js-node/logfaces-http': appenderModule,
     },
-    ignoreMissing: true
+    ignoreMissing: true,
   });
 
   options.type = '@log4js-node/logfaces-http';
   log4js.configure({
     appenders: { http: options },
-    categories: { default: { appenders: ['http'], level: 'trace', enableCallStack: enableCallStack } }
+    categories: {
+      default: { appenders: ['http'], level: 'trace', enableCallStack },
+    },
   });
 
   return {
     logger: log4js.getLogger(category),
     logger2: log4js.getLogger(category),
-    fakeAxios: fakeAxios,
-    fakeConsole: fakeConsole
+    fakeAxios,
+    fakeConsole,
   };
 }
 
@@ -66,14 +68,19 @@ test('logFaces appender', (batch) => {
     const setup = setupLogging('myCategory', false, {
       application: 'LFS-HTTP',
       url: 'http://localhost/receivers/rx1',
-      hostname: 'localhost'
+      hostname: 'localhost',
     });
 
     t.test('axios should be configured', (assert) => {
-      assert.equal(setup.fakeAxios.config.baseURL, 'http://localhost/receivers/rx1');
+      assert.equal(
+        setup.fakeAxios.config.baseURL,
+        'http://localhost/receivers/rx1'
+      );
       assert.equal(setup.fakeAxios.config.timeout, 5000);
       assert.equal(setup.fakeAxios.config.withCredentials, true);
-      assert.same(setup.fakeAxios.config.headers, { 'Content-Type': 'application/json' });
+      assert.same(setup.fakeAxios.config.headers, {
+        'Content-Type': 'application/json',
+      });
       assert.end();
     });
 
@@ -107,7 +114,10 @@ test('logFaces appender', (batch) => {
         'log4js.logFaces-HTTP Appender error posting to http://localhost/receivers/rx1: 500 - oh no'
       );
       setup.fakeAxios.errorCb(new Error('oh dear'));
-      assert.equal(setup.fakeConsole.msg, 'log4js.logFaces-HTTP Appender error: oh dear');
+      assert.equal(
+        setup.fakeConsole.msg,
+        'log4js.logFaces-HTTP Appender error: oh dear'
+      );
       assert.end();
     });
     t.end();
@@ -115,7 +125,7 @@ test('logFaces appender', (batch) => {
 
   batch.test('should serialise stack traces correctly', (t) => {
     const setup = setupLogging('stack-traces', false, {
-      url: 'http://localhost/receivers/rx1'
+      url: 'http://localhost/receivers/rx1',
     });
 
     setup.logger.error('Oh no', new Error('something went wrong'));
@@ -131,7 +141,7 @@ test('logFaces appender', (batch) => {
   batch.test('log event should contain locations', (t) => {
     const setup = setupLogging('myCategory', true, {
       application: 'LFS-HTTP',
-      url: 'http://localhost/receivers/rx1'
+      url: 'http://localhost/receivers/rx1',
     });
 
     setup.logger.info('Log event #1');
@@ -150,13 +160,13 @@ test('logFaces appender', (batch) => {
 
   batch.test('can handle global context', (t) => {
     const ctx = {
-      sessionID: 111
+      sessionID: 111,
     };
 
     const setup = setupLogging('myCategory', false, {
       application: 'LFS-HTTP',
       url: 'http://localhost/receivers/rx1',
-      configContext: () => ctx
+      configContext: () => ctx,
     });
 
     t.test('event has properties from config context', (assert) => {
