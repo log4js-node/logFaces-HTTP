@@ -33,8 +33,7 @@
     "prettier:fix": "prettier --write .",
     "pretest": "prettier --check . && eslint lib/**/*.js test/**/*.js",
     "test": "tap test/tap/**/*.js --100",
-    "typings": "tsc -p types/tsconfig.json",
-    "codecov": "tap test/tap/**/*.js --cov --coverage-report=lcov && codecov"
+    "typings": "tsc -p types/tsconfig.json"
   },
   "directories": {
     "test": "test",
@@ -47,7 +46,6 @@
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
     "@log4js-node/sandboxed-module": "^2.2.1",
-    "codecov": "^3.8.3",
     "conventional-changelog": "^3.1.25",
     "eslint": "^8.17.0",
     "eslint-config-airbnb-base": "^15.0.0",
