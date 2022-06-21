@@ -127,14 +127,17 @@ test('logFaces appender', (batch) => {
     const setup = setupLogging('stack-traces', false, {
       url: 'http://localhost/receivers/rx1',
     });
+    const error = new Error('something went wrong');
+    setup.logger.error(error, 'Oh no');
+    let [, event] = setup.fakeAxios.args;
+    t.equal(event.m, `${error.toString()} Oh no`);
+    const eventErrorLog = { w: true, i: error.stack };
+    t.match(event, eventErrorLog);
 
-    setup.logger.error('Oh no', new Error('something went wrong'));
-    const event = setup.fakeAxios.args[1];
-    t.equal(event.m, 'Oh no');
-    t.equal(event.w, true);
-    t.match(event.i, /Error: something went wrong/);
-    t.match(event.i, /at (Test.batch.test|Test.<anonymous>)/);
-
+    setup.logger.error('Oh no', error);
+    [, event] = setup.fakeAxios.args;
+    t.equal(event.m, `Oh no ${error.toString()}`);
+    t.match(event, eventErrorLog);
     t.end();
   });
 
