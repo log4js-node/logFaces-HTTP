@@ -50,7 +50,11 @@ logger.info("some interesting log message");
 
 // global context variables can be modified anywhere in the app
 MDC.sessionID = 222;
-logger.error("something has gone wrong", new Error("exception message"));
+logger.error(new Error("exception message"), "something has gone wrong");
 ```
 
-This example will result in two log events being sent to `lfs-server`. Both events will have a `requestId` property with a value of `123`. First event will have `sessionID` of `111` and second `sessionID` of `222`. Also since `enableCallStack` is set, both events will include location details such as file name, function name and line number. Second event will have a stack trace of a trown error.
+This example will result in two log events being sent to `lfs-server`. Both events will have a `requestId` property with a value of `123`. The first event will have `sessionID` of `111` and second will have `sessionID` of `222`. Also since `enableCallStack` is set, both events will include location details such as file name, function name and line number.
+
+The second event will have a full stack trace of the `Error` object passed in.
+
+Without `enableCallStack`, the `Error` stack would still get logged, but not the file name, function name, and line number as those are parsed earlier.
