@@ -235,5 +235,35 @@ test('logFaces appender', (batch) => {
     t.end();
   });
 
+  batch.test('eventLayout should enable changing the results', (t) => {
+    const setup = setupLogging('myCategory', false, {
+      application: 'LFS-HTTP',
+      url: 'http://localhost/receivers/rx1',
+      eventLayout: (event, lfEvent) => {
+        if (event.data[0] === 'SUPER SECRET!') {
+          return undefined;
+        }
+        lfEvent.m = `test: ${event.data[0]}`;
+        lfEvent.r = 'steve';
+        return lfEvent;
+      },
+    });
+
+    setup.logger.info('Log event #1');
+    const event = setup.fakeAxios.args[1];
+    t.match(event, {
+      a: 'LFS-HTTP',
+      m: 'test: Log event #1',
+      g: 'myCategory',
+      p: 'INFO',
+      r: 'steve',
+    });
+
+    setup.fakeAxios.args = undefined;
+    setup.logger.info('SUPER SECRET!');
+    t.equal(setup.fakeAxios.args, undefined);
+    t.end();
+  });
+
   batch.end();
 });
