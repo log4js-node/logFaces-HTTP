@@ -14,6 +14,7 @@ npm install log4js @log4js-node/logfaces-http
 - `timeout` - `integer` (optional, defaults to 5000ms) - the timeout for the HTTP request.
 - `configContext` - function (optional) returning a global context object accessible to all appenders. Properties from configContext added as `p_` values in the logFaces event.
 - `hostname` - `string` (optional) - used to add the hostname `h` property to the logFaces event.
+- `agent` - `http.Agent | https.Agent` (optional) - used to configure the requests being sent out if needed.
 
 This appender will also pick up Logger context values from the events, and add them as `p_` values in the logFaces event. See the example below for more details. Note that Logger context may override the same properties defined in `configContext`.
 
