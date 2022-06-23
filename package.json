@@ -31,7 +31,7 @@
   "scripts": {
     "prepare": "is-ci || husky install",
     "prettier:fix": "prettier --write .",
-    "pretest": "prettier --check . && eslint",
+    "pretest": "prettier --check . && eslint \"lib/**/*.js\" \"test/**/*.js\"",
     "test": "tap test/tap/**/*.js --100",
     "typings": "tsc -p types/tsconfig.json"
   },
