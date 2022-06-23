@@ -1,3 +1,6 @@
+import type { Agent as httpAgent } from 'http';
+import type { Agent as httpsAgent } from 'https';
+
 export interface LogFacesHTTPAppender {
   type: '@log4js-node/logfaces-http';
   /** logFaces receiver servlet URL */
@@ -14,6 +17,10 @@ export interface LogFacesHTTPAppender {
   hostname?: string;
   /** The shared global config to include in your logs */
   configContext?: () => Record<string, string | number>;
+  /** An http.Agent or https.Agent to allow configuring behavior as needed.
+   * Make sure you use the correct type base on your url
+   */
+  agent?: httpAgent | httpsAgent;
 }
 
 // Add the LogFacesHTTPAppender to the list of appenders in log4js for better type support
