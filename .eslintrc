@@ -10,7 +10,7 @@
     "import/no-extraneous-dependencies": 2
   },
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 2018
   },
   "ignorePatterns": ["coverage/**/*", "commitlint.config.js"]
 }
