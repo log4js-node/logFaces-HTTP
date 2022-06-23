@@ -261,7 +261,7 @@ test('logFaces appender', (batch) => {
       },
     });
     const message =
-      'log4js.logFaces-HTTP Appender eventLayout must be an object';
+      'log4js.logFaces-HTTP Appender eventLayout() must return an object';
     ['array', 'string', 'object'].forEach((input) => {
       setup.logger.info(input);
       t.equal(setup.fakeConsole.msg, message);

@@ -2,6 +2,9 @@ import type { Agent as httpAgent } from 'http';
 import type { Agent as httpsAgent } from 'https';
 import type { LoggingEvent } from 'log4js';
 
+/** https://stackoverflow.com/a/53742583/13175138 */
+type PickPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 export interface LogFacesHTTPAppender {
   type: '@log4js-node/logfaces-http';
   /** logFaces receiver servlet URL */
@@ -34,7 +37,7 @@ export interface LogFacesHTTPAppender {
 export type LogFacesLayoutFunction = (
   loggingEvent: LoggingEvent,
   logFacesEvent: Omit<LogFacesEvent, 'm'>
-) => LogFacesEvent | undefined | null;
+) => PickPartial<LogFacesEvent, 'm'> | undefined | null;
 
 /** [Data model: Log events](http://www.moonlit-software.com/logfaces/downloads/logfaces-manual.pdf) */
 export interface LogFacesEvent {
@@ -51,7 +54,7 @@ export interface LogFacesEvent {
   /** Name of the thread originating the event */
   r?: string;
   /** Message Content */
-  m?: string;
+  m: string;
   /** [Network Diagnostic Context](http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/NDC.html) */
   n?: string;
   /** Indication whether the event is a thrown exception */
