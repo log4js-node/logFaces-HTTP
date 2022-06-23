@@ -53,7 +53,7 @@ export interface LogFacesEvent {
   /** Message Content */
   m?: string;
   /** [Network Diagnostic Context](http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/NDC.html) */
-  n?: unknown;
+  n?: string;
   /** Indication whether the event is a thrown exception */
   w?: boolean;
   /** Stack trace of thrown exceptions */
