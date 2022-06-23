@@ -21,7 +21,9 @@ function setupLogging(category, enableCallStack, options) {
       };
     },
   };
-
+  /**
+   * @type {{msg?: string, error(msg:string):void}}
+   */
   const fakeConsole = {
     error(msg) {
       this.msg = msg;
@@ -234,7 +236,40 @@ test('logFaces appender', (batch) => {
 
     t.end();
   });
+  batch.test('eventLayout should error if set incorrectly', (t) => {
+    t.throws(() => {
+      setupLogging('myCategory', false, {
+        application: 'LFS-HTTP',
+        url: 'http://localhost/receivers/rx1',
+        eventLayout: 'banana',
+      });
+    });
+    const setup = setupLogging('myCategory', false, {
+      application: 'LFS-HTTP',
+      url: 'http://localhost/receivers/rx1',
+      eventLayout: (event) => {
+        if (event.data[0] === 'array') {
+          return [];
+        }
+        if (event.data[0] === 'string') {
+          return 'string';
+        }
+        if (event.data[0] === 'object') {
+          return {};
+        }
+        return undefined;
+      },
+    });
+    const message =
+      'log4js.logFaces-HTTP Appender eventLayout must be an object';
+    ['array', 'string', 'object'].forEach((input) => {
+      setup.logger.info(input);
+      t.equal(setup.fakeConsole.msg, message);
+      setup.fakeConsole.msg = undefined;
+    });
 
+    t.end();
+  });
   batch.test('eventLayout should enable changing the results', (t) => {
     const setup = setupLogging('myCategory', false, {
       application: 'LFS-HTTP',
