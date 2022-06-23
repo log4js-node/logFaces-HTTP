@@ -36,23 +36,21 @@ export type LogFacesLayoutFunction = (
 /** [Data model: Log events](http://www.moonlit-software.com/logfaces/downloads/logfaces-manual.pdf) */
 export interface LogFacesEvent {
   /** Time stamp as specified by the source or server */
-  t?: number;
-  /** Sequence number, each event produced by logFaces has running sequence number */
-  q?: number;
+  t: number;
   /** Severity of event expressed in term of log4j levels */
-  p?: number | string;
+  p: number | string;
   /**  Name of the domain (or application) originating the event */
-  a?: string;
+  a: string;
   /** Name of the host originating the event */
   h?: string;
   /** Name of the logger (class, module, etc) originating the event */
-  g?: string;
+  g: string;
   /** Name of the thread originating the event */
   r?: string;
   /** Message Content */
   m?: string;
   /** [Network Diagnostic Context](http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/NDC.html) */
-  n?: string;
+  n?: unknown;
   /** Indication whether the event is a thrown exception */
   w?: boolean;
   /** Stack trace of thrown exceptions */
