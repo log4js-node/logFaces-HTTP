@@ -15,7 +15,7 @@ npm install log4js @log4js-node/logfaces-http
 - `configContext` - function (optional) returning a global context object accessible to all appenders. Properties from configContext added as `p_` values in the logFaces event.
 - `hostname` - `string` (optional) - used to add the hostname `h` property to the logFaces event.
 - `agent` - `http.Agent | https.Agent` (optional) - used to configure the requests being sent out if needed.
-- `eventLayout` - `(LoggingEvent, LogFacesEvent) => LogFacesEvent` (optional) - allows more control and ability to modify and set the properties of the LogFacesEvent that will get sent to the server. Note: returning `null` or `undefined` will cause the event to be ignored and not logged. If you don't set `LogFacesEvent.m`, the default format for the message will be applied.
+- `eventLayout` - `(LoggingEvent, LogFacesEvent) => LogFacesEvent` (optional) - allows more control and ability to modify and set the properties of the LogFacesEvent that will get sent to the server. Note: returning `null` or `undefined` will cause the event to be ignored and not logged. If `LogFacesEvent.m` is nullish, the default format for the message will be applied.
 
 This appender will also pick up Logger context values from the events, and add them as `p_` values in the logFaces event. See the example below for more details. Note that Logger context may override the same properties defined in `configContext`.
 

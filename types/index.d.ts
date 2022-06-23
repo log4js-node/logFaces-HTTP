@@ -24,7 +24,10 @@ export interface LogFacesHTTPAppender {
   agent?: httpAgent | httpsAgent;
   /** Adjust the resulting logfacesEvent that is sent out.
    *
-   * Needs to return the new layout or undefined to ignore the event. */
+   * Needs to return the new layout or undefined to ignore the event.
+   *
+   * If `LogFacesEvent.m` is nullish: it will be populated with the default formatter
+   * */
   eventLayout?: LogFacesLayoutFunction;
 }
 
