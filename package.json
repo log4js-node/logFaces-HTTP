@@ -40,7 +40,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^1.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
